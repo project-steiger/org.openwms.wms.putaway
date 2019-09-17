@@ -62,8 +62,8 @@
 	</ciManagement>
 
 	<properties>
-		<core.version>1.6.0-SNAPSHOT</core.version>
-		<common.version>1.5.0-SNAPSHOT</common.version>
+		<core.version>1.5.0</core.version>
+		<common.version>1.4.0</common.version>
 	</properties>
 
 	<reporting>
