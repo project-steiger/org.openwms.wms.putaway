@@ -23,7 +23,7 @@ The Putaway strategy is a so called attached service that must be attached to th
 JAR file of the COMMON Service and attach this service while starting the COMMON Service:
 
 ```
-$ java -cp openwms-common-service-exec.jar -Dloader.main=org.openwms.common.CommonStarter -Dloader.path=target/openwms-putaway-service.jar org.springframework.boot.loader.PropertiesLauncher
+$ java -cp openwms-common-service-exec.jar -Dspring.profiles.active=DEMO -Dloader.main=org.openwms.common.CommonStarter -Dloader.path=target/openwms-putaway-service.jar org.springframework.boot.loader.PropertiesLauncher
 ```
 
 After the service has started up make a HTTP call to
