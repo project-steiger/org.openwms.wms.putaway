@@ -3,22 +3,42 @@ OpenWMS.org WMS: Simple Putaway
 
 Responsibilities of the Putaway service are as follows:
   
-  - The Putaway strategy is called to find a Location in 
+  - The Putaway strategy is called to find an available Location for a TransportUnit in a given list of warehouse aisles
+  - The strategy counts the number of free Locations in a warehouse aisle
 
 # Resources
 
-[![License][license-image]][license-url]
+[![Build status](https://travis-ci.com/openwms/org.openwms.wms.putaway.svg?branch=master)](https://travis-ci.com/openwms/org.openwms.wms.putaway)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+[![Quality](https://sonarcloud.io/api/project_badges/measure?project=org.openwms:org.openwms.wms.putaway&metric=alert_status)](https://sonarcloud.io/dashboard?id=org.openwms:org.openwms.wms.putaway)
+[![Join the chat at https://gitter.im/openwms/org.openwms](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/openwms/org.openwms?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-[license-image]: http://img.shields.io/:license-GPLv2-blue.svg?style=flat-square
-[license-url]: LICENSE
+# Build & Run
+
+```
+$ mvn package
+```
+
+The Putaway strategy is a so called attached service that must be attached to the OpenWMS.org COMMON Service in order to run. So grab the
+JAR file of the COMMON Service and attach this service while starting the COMMON Service:
+
+```
+$ java -cp openwms-common-service-exec.jar -Dloader.main=org.openwms.common.CommonStarter -Dloader.path=target/openwms-putaway-service.jar org.springframework.boot.loader.PropertiesLauncher
+```
+
+After the service has started up make a HTTP call to
+
+```
+http://localhost:8120/v1/location-groups?locationGroupName=FGSTOCK&transportUnitBK=00000000000000004711
+```
+
+to find a free stock Location.
 
 # Current state of development
 
 Under development
 
 # Models
-
-![DomainModel][1]
 
 ## Anti Corruption Layer (ACL)
 
@@ -52,5 +72,3 @@ A **LoadUnit** is used to divide a **TransportUnit** into physical areas. Each o
 be assigned to a particular Product only and may refer to a number of PackagingUnits that
 are placed in the area. LoadUnits are used in the picking process to tell the operator
 where to take PackagingUnits or an amount of Product items from.
-
-[1]: src/site/resources/images/domain-model.png
