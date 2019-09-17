@@ -1,13 +1,9 @@
-OpenWMS.org WMS: Inventory
+OpenWMS.org WMS: Simple Putaway
 =====================
 
-The main responsibilities of the Inventory service are as follows:
+Responsibilities of the Putaway service are as follows:
   
-  - **Allocation**. The Allocation strategy chooses available **PackagingUnit** of a 
-   **Product** according to the demanded amount. Usually this is used to fulfill order
-   positions. An order position may be divided into multiple splits. Each split corresponds
-   to an allocation unit and triggers a transport order to actually get the items out of
-   stock.
+  - The Putaway strategy is called to find a Location in 
 
 # Resources
 
