@@ -27,7 +27,6 @@ import org.openwms.core.http.AbstractWebController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -71,14 +70,14 @@ class PutawayController extends AbstractWebController {
     }
 
     @Measured
-    @GetMapping(value = API_LOCATION_GROUPS + "/{locationGroupName}/location", params = {"barcode"})
+    @GetMapping(value = API_LOCATION_GROUPS, params = {"locationGroupName", "transportUnitBK"})
     LocationVO findInAisle(
-            @PathVariable("locationGroupName") String locationGroupName,
-            @RequestParam("barcode") String barcode
+            @RequestParam("locationGroupName") String locationGroupName,
+            @RequestParam("transportUnitBK") String transportUnitBK
     ) {
         List<Location> locations = putawayService.findAvailableStockLocations(
                 Collections.singletonList(locationGroupName),
-                Barcode.of(barcode),
+                Barcode.of(transportUnitBK),
                 LocationGroupState.AVAILABLE,
                 null,
                 1
