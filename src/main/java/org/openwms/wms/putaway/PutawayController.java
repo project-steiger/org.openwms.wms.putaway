@@ -59,7 +59,7 @@ class PutawayController extends AbstractWebController {
 
     @Measured
     @GetMapping(value = API_LOCATION_GROUPS, params = {"locationGroupNames"})
-    int findAvailableLocationsOf(
+    public int findAvailableLocationsOf(
             @RequestParam("locationGroupNames") String locationGroupNames
     ) {
         int count = putawayService.availableLocationsIn(Stream.of((locationGroupNames).split(",")).map(String::trim).collect(Collectors.toList()));
@@ -71,7 +71,7 @@ class PutawayController extends AbstractWebController {
 
     @Measured
     @GetMapping(value = API_LOCATION_GROUPS, params = {"locationGroupName", "transportUnitBK"})
-    LocationVO findInAisle(
+    public LocationVO findInAisle(
             @RequestParam("locationGroupName") String locationGroupName,
             @RequestParam("transportUnitBK") String transportUnitBK
     ) {
