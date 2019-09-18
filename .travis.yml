@@ -8,11 +8,24 @@ cache:
     - .autoconf
     - $TRAVIS_HOME/.m2
 
+services:
+  - docker
+  - rabbitmq
+  - postgresql
+
+before_install:
+  - "sudo apt-get install graphviz"
+
 install: true
+
+before_script:
+  - psql -c "CREATE DATABASE testdb;" -U postgres
+  - psql -c "CREATE USER karl WITH PASSWORD 'karl';" -U postgres
 
 addons:
   sonarcloud:
     organization: "openwms-github"
+  postgresql: '9.6'
 
 script:
   - if [[ ( "$TRAVIS_BRANCH" != "master" ) ]]; then mvn package -DsurefireArgs=-Dspring.profiles.active=ASYNCHRONOUS,TEST -Dci.buildNumber=$TRAVIS_BUILD_NUMBER -U; fi
