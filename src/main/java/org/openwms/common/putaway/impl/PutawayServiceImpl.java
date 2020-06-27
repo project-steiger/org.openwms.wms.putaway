@@ -13,18 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.putaway.impl;
+package org.openwms.common.putaway.impl;
 
 import org.ameba.annotation.Measured;
 import org.ameba.annotation.TxService;
 import org.openwms.common.location.Location;
 import org.openwms.common.location.LocationType;
 import org.openwms.common.location.api.LocationGroupState;
+import org.openwms.common.putaway.PutawayService;
 import org.openwms.common.transport.Barcode;
 import org.openwms.common.transport.TransportUnit;
 import org.openwms.common.transport.TransportUnitService;
 import org.openwms.common.transport.TypePlacingRule;
-import org.openwms.wms.putaway.PutawayService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;

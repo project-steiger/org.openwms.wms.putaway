@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.putaway;
+package org.openwms.common.putaway;
 
 import org.openwms.common.location.Location;
 import org.openwms.common.location.api.LocationGroupState;

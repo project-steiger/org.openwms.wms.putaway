@@ -1,0 +1,4 @@
+FROM openwms/org.openwms.common.service:latest
+ARG JAR_FILE=target/openwms-wms-putaway.jar
+COPY ${JAR_FILE} BOOT-INF/lib/openwms-wms-putaway.jar
+ENTRYPOINT ["java", "-Xshareclasses -Xquickstart -noverify", "org.springframework.boot.loader.JarLauncher"]

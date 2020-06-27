@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.wms.putaway.api;
+package org.openwms.common.putaway.api;
 
 import org.openwms.common.location.api.LocationVO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import static org.openwms.wms.putaway.api.PutawayConstants.API_LOCATION_GROUPS;
 
 /**
  * A PutawayApi.
@@ -35,7 +33,7 @@ public interface PutawayApi {
      * @param locationGroupNames A comma separated list of LocationGroup names
      * @return The sum of all available Locations in all LocationGroups
      */
-    @GetMapping(value = API_LOCATION_GROUPS, params = {"locationGroupNames"})
+    @GetMapping(value = PutawayConstants.API_LOCATION_GROUPS, params = {"locationGroupNames"})
     int countAvailableLocationsIn(
             @RequestParam("locationGroupNames") String locationGroupNames
     );
@@ -48,7 +46,7 @@ public interface PutawayApi {
      * @return Next free Location for infeed
      * @throws org.ameba.exception.NotFoundException May throw in case no Location available
      */
-    @GetMapping(value = API_LOCATION_GROUPS, params = {"locationGroupName", "transportUnitBK"})
+    @GetMapping(value = PutawayConstants.API_LOCATION_GROUPS, params = {"locationGroupName", "transportUnitBK"})
     LocationVO findInAisle(
             @RequestParam("locationGroupName") String locationGroupName,
             @RequestParam("transportUnitBK") String transportUnitBK
