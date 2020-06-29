@@ -65,7 +65,7 @@
 		<ameba-lib.version>2.4-SNAPSHOT</ameba-lib.version>
 		<core.version>1.8.0-SNAPSHOT</core.version>
 		<common.version>1.6.0-SNAPSHOT</common.version>
-		<spring-cloud-dependencies.version>2020.0.0-M2</spring-cloud-dependencies.version>
+		<spring-cloud-dependencies.version>Hoxton.RELEASE</spring-cloud-dependencies.version>
 	</properties>
 
 	<reporting>
