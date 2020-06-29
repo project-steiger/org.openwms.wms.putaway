@@ -144,7 +144,7 @@
 			<classifier>all</classifier>
 		</dependency>
 
-		<!-- Spring Framework -->
+		<!-- Spring Dependencies -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -243,6 +243,16 @@
 		</dependency>
     </dependencies>
 
+    <profiles>
+        <profile>
+        <id>schemagen</id>
+            <properties>
+                <surefireArgs>-Dspring.profiles.active=ASYNCHRONOUS,TEST,TESTPG</surefireArgs>
+                <schemagen.outputDirectory>${project.build.directory}/site/${project.version}</schemagen.outputDirectory>
+            </properties>
+        </profile>
+    </profiles>
+
 	<repositories>
 		<repository>
 			<id>sonatype-nexus-snapshots</id>
@@ -253,12 +263,23 @@
 			</snapshots>
 			<releases>
 				<enabled>false</enabled>
+            </releases>
+        </repository>
+        <repository>
+            <id>sonatype-nexus-staging</id>
+            <name>Staging Repository</name>
+            <url>https://oss.sonatype.org/content/groups/staging/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
 			</releases>
 		</repository>
 		<repository>
 			<id>spring-milestones</id>
 			<name>Spring Milestones</name>
-			<url>https://repo.spring.io/libs-milestone</url>
+            <url>https://repo.spring.io/milestone</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
