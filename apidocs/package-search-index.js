@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"org.openwms.common.putaway"},{"l":"org.openwms.common.putaway.api"},{"l":"org.openwms.common.putaway.impl"}]
