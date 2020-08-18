@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.openwms</groupId>
         <artifactId>org.openwms.parent</artifactId>
-        <version>16</version>
+        <version>17</version>
         <relativePath />
     </parent>
     <artifactId>org.openwms.wms.putaway</artifactId>
@@ -62,10 +62,10 @@
 	</ciManagement>
 
 	<properties>
-		<ameba-lib.version>2.4-SNAPSHOT</ameba-lib.version>
-		<core.version>1.8.0-SNAPSHOT</core.version>
-		<common.version>1.6.0-SNAPSHOT</common.version>
-		<guava.version>19.0</guava.version>
+		<ameba-lib.version>2.4</ameba-lib.version>
+		<common.version>1.7.0-SNAPSHOT</common.version>
+		<core.version>1.8.0</core.version>
+		<guava.version>29.0-jre</guava.version>
 		<spring-cloud-dependencies.version>Hoxton.RELEASE</spring-cloud-dependencies.version>
 	</properties>
 
@@ -233,6 +233,11 @@
 					<!-- Internal MAJOR clash -->
 					<groupId>com.google.guava</groupId>
 					<artifactId>guava</artifactId>
+				</exclusion>
+				<exclusion>
+					<!-- Bites with Guava -->
+					<groupId>com.google.code.findbugs</groupId>
+					<artifactId>jsr305</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>

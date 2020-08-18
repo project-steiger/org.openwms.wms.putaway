@@ -22,7 +22,7 @@ import org.openwms.common.location.Location;
 import org.openwms.common.location.LocationGroupService;
 import org.openwms.common.location.api.LocationGroupState;
 import org.openwms.common.location.api.LocationVO;
-import org.openwms.common.transport.Barcode;
+import org.openwms.common.transport.barcode.Barcode;
 import org.openwms.core.http.AbstractWebController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

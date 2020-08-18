@@ -17,7 +17,7 @@ package org.openwms.common.putaway;
 
 import org.openwms.common.location.Location;
 import org.openwms.common.location.api.LocationGroupState;
-import org.openwms.common.transport.Barcode;
+import org.openwms.common.transport.barcode.Barcode;
 
 import java.util.List;
 
