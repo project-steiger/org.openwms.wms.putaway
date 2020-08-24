@@ -20,6 +20,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 /**
  * A PutawayApi.
  *
@@ -39,6 +41,20 @@ public interface PutawayApi {
     );
 
     /**
+     * Find proper stock locations for infeed in the {@code LocationGroup} identified by the {@code locationGroupName}.
+     *
+     * @param locationGroupName Name of the LocationGroup to search Locations for
+     * @param transportUnitBK The unique (physical) identifier of the TransportUnit to search a Location for
+     * @return Next free Location for infeed
+     * @throws org.ameba.exception.NotFoundException May throw in case no Location available
+     */
+    @GetMapping(value = PutawayConstants.API_LOCATION_GROUPS, params = {"locationGroupName", "transportUnitBK"})
+    List<LocationVO> findInAisle(
+            @RequestParam("locationGroupName") String locationGroupName,
+            @RequestParam("transportUnitBK") String transportUnitBK
+    );
+
+    /**
      * Find the next stock location for infeed in the {@code LocationGroup} identified by the {@code locationGroupName}.
      *
      * @param locationGroupName Name of the LocationGroup to search a Location for
@@ -46,8 +62,8 @@ public interface PutawayApi {
      * @return Next free Location for infeed
      * @throws org.ameba.exception.NotFoundException May throw in case no Location available
      */
-    @GetMapping(value = PutawayConstants.API_LOCATION_GROUPS, params = {"locationGroupName", "transportUnitBK"})
-    LocationVO findInAisle(
+    @GetMapping(value = PutawayConstants.API_LOCATION_GROUPS, params = {"locationGroupName", "transportUnitBK"}, produces = "application/vnd.openwms.location.single-v1+json")
+    LocationVO findNextInAisle(
             @RequestParam("locationGroupName") String locationGroupName,
             @RequestParam("transportUnitBK") String transportUnitBK
     );

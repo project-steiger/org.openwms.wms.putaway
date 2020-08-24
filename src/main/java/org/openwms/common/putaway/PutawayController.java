@@ -72,7 +72,29 @@ class PutawayController extends AbstractWebController {
 
     @Measured
     @GetMapping(value = API_LOCATION_GROUPS, params = {"locationGroupName", "transportUnitBK"})
-    public ResponseEntity<LocationVO> findInAisle(
+    public ResponseEntity<List<LocationVO>> findInAisle(
+            @RequestParam("locationGroupName") String locationGroupName,
+            @RequestParam("transportUnitBK") String transportUnitBK
+    ) {
+        List<Location> locations = putawayService.findAvailableStockLocations(
+                Collections.singletonList(locationGroupName),
+                Barcode.of(transportUnitBK),
+                LocationGroupState.AVAILABLE,
+                null,
+                1
+        );
+        if (locations.isEmpty()) {
+            throw new NotFoundException(format("No stock locations available for infeed in LocationGroup [%s]", locationGroupName));
+        }
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Available location found in aisle [{}] for infeed", locations.size());
+        }
+        return ResponseEntity.ok(mapper.map(locations, LocationVO.class));
+    }
+
+    @Measured
+    @GetMapping(value = API_LOCATION_GROUPS, params = {"locationGroupName", "transportUnitBK"}, produces = "application/vnd.openwms.location.single-v1+json")
+    public ResponseEntity<LocationVO> findNextInAisle(
             @RequestParam("locationGroupName") String locationGroupName,
             @RequestParam("transportUnitBK") String transportUnitBK
     ) {
