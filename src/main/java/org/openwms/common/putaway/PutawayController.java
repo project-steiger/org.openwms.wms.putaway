@@ -19,20 +19,22 @@ import org.ameba.annotation.Measured;
 import org.ameba.exception.NotFoundException;
 import org.ameba.mapping.BeanMapper;
 import org.openwms.common.location.Location;
-import org.openwms.common.location.LocationGroupService;
 import org.openwms.common.location.api.LocationGroupState;
 import org.openwms.common.location.api.LocationVO;
+import org.openwms.common.putaway.api.PutawayConstants;
 import org.openwms.common.transport.barcode.Barcode;
 import org.openwms.core.http.AbstractWebController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -48,12 +50,10 @@ import static org.openwms.common.putaway.api.PutawayConstants.API_LOCATION_GROUP
 class PutawayController extends AbstractWebController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PutawayController.class);
-    private final LocationGroupService locationGroupService;
     private final PutawayService putawayService;
     private final BeanMapper mapper;
 
-    PutawayController(LocationGroupService locationGroupService, PutawayService putawayService, BeanMapper mapper) {
-        this.locationGroupService = locationGroupService;
+    PutawayController(PutawayService putawayService, BeanMapper mapper) {
         this.putawayService = putawayService;
         this.mapper = mapper;
     }
@@ -93,7 +93,9 @@ class PutawayController extends AbstractWebController {
     }
 
     @Measured
-    @GetMapping(value = API_LOCATION_GROUPS, params = {"locationGroupName", "transportUnitBK"}, produces = "application/vnd.openwms.location.single-v1+json")
+    @GetMapping(value = API_LOCATION_GROUPS,
+            params = {"locationGroupName", "transportUnitBK"},
+            produces = "application/vnd.openwms.location.single-v1+json")
     public ResponseEntity<LocationVO> findNextInAisle(
             @RequestParam("locationGroupName") String locationGroupName,
             @RequestParam("transportUnitBK") String transportUnitBK
@@ -112,5 +114,27 @@ class PutawayController extends AbstractWebController {
             LOGGER.debug("Available location found in aisle [{}] for infeed", locations.get(0));
         }
         return ResponseEntity.ok(mapper.map(locations.get(0), LocationVO.class));
+    }
+
+    @PostMapping(value = PutawayConstants.API_LOCATION_GROUPS,
+            params = {"locationGroupName", "transportUnitBK"},
+            produces = "application/vnd.openwms.location.single-v1+json")
+    ResponseEntity<LocationVO> findAndAssignNextInLocGroup(
+            @RequestParam("locationGroupName") String locationGroupName,
+            @RequestParam("transportUnitBK") String transportUnitBK
+    ) {
+        Optional<Location> location = putawayService.findAndAssignNextLocations(
+                Collections.singletonList(locationGroupName),
+                Barcode.of(transportUnitBK),
+                LocationGroupState.AVAILABLE,
+                null
+        );
+        if (location.isEmpty()) {
+            throw new NotFoundException(format("No stock locations available for infeed in LocationGroup [%s]", locationGroupName));
+        }
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Available location found in aisle [{}] for infeed", location.get());
+        }
+        return ResponseEntity.ok(mapper.map(location.get(), LocationVO.class));
     }
 }

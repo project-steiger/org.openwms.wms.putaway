@@ -18,6 +18,7 @@ package org.openwms.common.putaway.api;
 import org.openwms.common.location.api.LocationVO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -64,6 +65,21 @@ public interface PutawayApi {
      */
     @GetMapping(value = PutawayConstants.API_LOCATION_GROUPS, params = {"locationGroupName", "transportUnitBK"}, produces = "application/vnd.openwms.location.single-v1+json")
     LocationVO findNextInAisle(
+            @RequestParam("locationGroupName") String locationGroupName,
+            @RequestParam("transportUnitBK") String transportUnitBK
+    );
+
+    /**
+     * Find the next available location for infeed in the {@code LocationGroup} identified by the {@code locationGroupName} and assign the
+     * {@code TransportUnit} with the given business key to this target.
+     *
+     * @param locationGroupName Name of the LocationGroup to search a Location for
+     * @param transportUnitBK The unique (physical) identifier of the TransportUnit to search a Location for
+     * @return Assigned Location for infeed
+     * @throws org.ameba.exception.NotFoundException May throw in case no Location available
+     */
+    @PostMapping(value = PutawayConstants.API_LOCATION_GROUPS, params = {"locationGroupName", "transportUnitBK"}, produces = "application/vnd.openwms.location.single-v1+json")
+    LocationVO findAndAssignNextInLocGroup(
             @RequestParam("locationGroupName") String locationGroupName,
             @RequestParam("transportUnitBK") String transportUnitBK
     );

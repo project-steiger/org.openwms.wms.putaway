@@ -20,6 +20,7 @@ import org.openwms.common.location.api.LocationGroupState;
 import org.openwms.common.transport.barcode.Barcode;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * A PutawayService.
@@ -29,21 +30,41 @@ import java.util.List;
 public interface PutawayService {
 
     /**
-     * Find and return all {@code Location}s that belong to the {@code LocationGroup}s
-     * identified by the given {@code stockLocationGroupNames} and that match the applied
-     * filter criteria.
+     * Find and return all {@code Location}s that belong to the {@code LocationGroup}s identified by the given
+     * {@code stockLocationGroupNames} and that match the applied filter criteria.
      *
-     * @param stockLocationGroupNames The names of the LocationGroups to search Locations
-     * for
+     * @param stockLocationGroupNames The names of the LocationGroups to search Locations for
      * @param barcode The Barcode of the TransportUnit to search a Location for
-     * @param groupStateIn If {@literal null} this criterion is not applied, otherwise
-     * only Locations are considered that match the demanded groupStateIn
-     * @param groupStateOut If {@literal null} this criterion is not applied, otherwise
-     * only Locations are considered that match the demanded groupStateOut
+     * @param groupStateIn If {@literal null} this criterion is not applied, otherwise only Locations are considered that match the demanded
+     * groupStateIn
+     * @param groupStateOut If {@literal null} this criterion is not applied, otherwise only Locations are considered that match the
+     * demanded groupStateOut
      * @param count A number of Locations to return. Useful to limit the result set
      * @return All Locations, never {@literal null}
      */
-    List<Location> findAvailableStockLocations(List<String> stockLocationGroupNames, Barcode barcode, LocationGroupState groupStateIn, LocationGroupState groupStateOut, int count);
+    List<Location> findAvailableStockLocations(List<String> stockLocationGroupNames, Barcode barcode, LocationGroupState groupStateIn,
+            LocationGroupState groupStateOut, int count);
 
+    /**
+     * Find assign and return an {@code Location} that belong to the {@code LocationGroup}s identified by the given
+     * {@code stockLocationGroupNames} and that matches the applied filter criteria.
+     *
+     * @param stockLocationGroupNames The names of the LocationGroups to search Locations for
+     * @param barcode The Barcode of the TransportUnit to search a Location for
+     * @param groupStateIn If {@literal null} this criterion is not applied, otherwise only Locations are considered that match the demanded
+     * groupStateIn
+     * @param groupStateOut If {@literal null} this criterion is not applied, otherwise only Locations are considered that match the
+     * demanded groupStateOut
+     * @return The assigned Location
+     */
+    Optional<Location> findAndAssignNextLocations(List<String> stockLocationGroupNames, Barcode barcode, LocationGroupState groupStateIn,
+            LocationGroupState groupStateOut);
+
+    /**
+     * Get the number of all available {@code Location}s in the {@code LocationGroup}s.
+     *
+     * @param locationGroupNames The names of the LocationGroups to search for
+     * @return The amount of Locations available for infeed and outfeed.
+     */
     int availableLocationsIn(List<String> locationGroupNames);
 }

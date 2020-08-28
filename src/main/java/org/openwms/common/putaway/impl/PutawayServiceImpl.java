@@ -31,6 +31,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
@@ -81,6 +82,41 @@ class PutawayServiceImpl implements PutawayService {
                     locationTypes.toString(), locations.isEmpty() ? "" : format(" First one is [%s]", locations.get(0)));
         }
         return locations;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Measured
+    @Override
+    public Optional<Location> findAndAssignNextLocations(List<String> stockLocationGroupNames, Barcode barcode,
+            LocationGroupState groupStateIn, LocationGroupState groupStateOut) {
+        LOGGER.debug("Searching a Location in LocationGroups [{}] in groupStateIn [{}] and groupStateOut [{}]", stockLocationGroupNames,
+                groupStateIn, groupStateOut);
+        TransportUnit transportUnit = transportUnitService.findByBarcode(barcode);
+        List<LocationType> locationTypes = transportUnit.getTransportUnitType()
+                .getTypePlacingRules()
+                .stream()
+                .map(TypePlacingRule::getAllowedLocationType)
+                .collect(Collectors.toList());
+
+        List<Location> locations = stockLocationRepository.findBy(
+                PageRequest.of(0, 1),
+                stockLocationGroupNames,
+                groupStateIn,
+                groupStateOut,
+                locationTypes);
+
+        if (locations == null || locations.isEmpty()) {
+            return Optional.empty();
+        }
+
+        transportUnit.setTargetLocation(locations.get(0));
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Assigned targetLocation [{}] to TransportUnit [{}] for location types {}", locations.get(0), barcode,
+                    locationTypes.toString());
+        }
+        return Optional.of(locations.get(0));
     }
 
     /**
