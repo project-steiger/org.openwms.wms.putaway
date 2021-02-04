@@ -8,7 +8,7 @@
         <version>19</version>
         <relativePath />
     </parent>
-    <artifactId>org.openwms.wms.putaway</artifactId>
+    <artifactId>org.openwms.projects.steiger.putaway</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <name>OpenWMS.org WMS: Simple Putaway Service</name>
     <url>https://openwms.github.io/${project.artifactId}/index.html</url>
